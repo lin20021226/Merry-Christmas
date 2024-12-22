@@ -326,26 +326,36 @@
       const mIndexs = [];
 
       const color = new THREE.Color();
-
       for (let i = 0; i < totalPoints; i++) {
-       const t = Math.random();
-       const y = map(t, 0, 1, -8, 10);
-       const ang = map(t, 0, 1, 0, 6 * TAU) + TAU / 2 * (i % 2);
-       const [z, x] = polar(ang, map(t, 0, 1, 5, 0));
+      const t = Math.random();
+      const y = map(t, 0, 1, -8, 10);
+      const ang = map(t, 0, 1, 0, 6 * TAU) + TAU / 2 * (i % 2);
+      const [z, x] = polar(ang, map(t, 0, 1, 5, 0));
 
-       const modifier = map(t, 0, 1, 1, 0);
-       positions.push(x + rand(-0.3 * modifier, 0.3 * modifier));
-       positions.push(y + rand(-0.3 * modifier, 0.3 * modifier));
-       positions.push(z + rand(-0.3 * modifier, 0.3 * modifier));
+      const modifier = map(t, 0, 1, 1, 0);
+      positions.push(x + rand(-0.3 * modifier, 0.3 * modifier));
+      positions.push(y + rand(-0.3 * modifier, 0.3 * modifier));
+      positions.push(z + rand(-0.3 * modifier, 0.3 * modifier));
+      
+       // 随机生成HSL值
+       
+      const hue = rand(0, 1); // 色调在0到1之间随机
+      const saturation = rand(0.7, 1.0); // 饱和度在0.7到1.0之间随机，以确保颜色鲜艳
+      const lightness = rand(0.3, 0.7); // 亮度在0.3到0.7之间随机，以确保颜色不会太暗或太亮
 
-       color.setHSL(map(i, 0, totalPoints, 1.0, 0.0), 1.0, 0.5);
+      color.setHSL(hue, saturation, lightness);
 
-       colors.push(color.r, color.g, color.b);
-       phases.push(rand(1000));
+      colors.push(color.r, color.g, color.b);
+      phases.push(rand(1000));
        sizes.push(1);
        const mIndex = map(i, 0, totalPoints, 1.0, 0.0);
        mIndexs.push(mIndex);
-      }
+       }
+
+geometry.setAttribute(
+ "position",
+ new THREE.Float32BufferAttribute(positions, 3).setUsage(
+  THREE.DynamicDrawUsage));
 
       geometry.setAttribute(
        "position",
